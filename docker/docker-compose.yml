@@ -44,7 +44,7 @@ moviesui:
     - discovery
     - config
   ports:
-    - "1111:1111"
+    - "1112:1112"
   environment:
     - SPRING_PROFILES_ACTIVE=docker
 rating:
@@ -63,5 +63,7 @@ user:
   links:
     - discovery
     - config
+  ports:
+    - "9000:9000"
   environment:
     - SPRING_PROFILES_ACTIVE=docker
