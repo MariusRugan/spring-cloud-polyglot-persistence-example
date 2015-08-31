@@ -1,4 +1,4 @@
-package service.config;
+package service.data.config;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,6 @@ import org.springframework.data.neo4j.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.rest.SpringCypherRestGraphDatabase;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import java.util.Arrays;
 
 /**
  * @author Kenny Bastani

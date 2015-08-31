@@ -5,7 +5,7 @@ spring:
 spring:
   profiles: cloud
 server:
-  port: 1111
+  port: 1112
 eureka:
   client:
     serviceUrl:
@@ -20,7 +20,7 @@ ribbon:
 spring:
   profiles: docker
 server:
-  port: 1111
+  port: 1112
 eureka:
   client:
     serviceUrl:

@@ -1,57 +1,79 @@
 package service;
 
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.factory.GraphDatabaseFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.neo4j.config.EnableNeo4jRepositories;
-import org.springframework.data.neo4j.config.Neo4jConfiguration;
-import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceProcessor;
+import org.springframework.hateoas.hal.Jackson2HalModule;
+
+import javax.annotation.PostConstruct;
+
+import lombok.extern.slf4j.Slf4j;
+import service.data.config.GraphDatabaseConfiguration;
 import service.data.domain.entity.User;
 
 @SpringBootApplication
-@EnableNeo4jRepositories
+@ComponentScan({ "service.data", "service.config" })
 @EnableZuulProxy
 @EnableHystrix
-public class Application extends Neo4jConfiguration {
+@Slf4j
+public class Application {
+
+    final Logger logger = LoggerFactory.getLogger(Application.class);
+
+    @Value("${neo4j.bootstrap}")
+    Boolean bootstrap;
 
     // Used to bootstrap the Neo4j database with demo data
     @Value("${aws.s3.url}")
     String datasetUrl;
 
-    public Application() {
-        setBasePackage("service");
-    }
-
-    @Bean(destroyMethod = "shutdown")
-    public GraphDatabaseService graphDatabaseService() {
-        return new GraphDatabaseFactory().newEmbeddedDatabase("user.db");
-    }
+    @Autowired
+    RepositoryRestMvcConfiguration restConfiguration;
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
+        System.setProperty("org.neo4j.rest.read_timeout", "250");
+        SpringApplication.run(Application.class, args);
+    }
 
-        RepositoryRestConfiguration restConfiguration = ctx.getBean("config", RepositoryRestConfiguration.class);
-        restConfiguration.exposeIdsFor(User.class);
+    @PostConstruct
+    public void postConstructConfiguration() {
+        // Expose ids for the domain entities having repositories
+        logger.info("Exposing IDs on repositories...");
+        restConfiguration.config().exposeIdsFor(User.class);
+
+        // Register the ObjectMapper module for properly rendering HATEOAS REST repositories
+        logger.info("Registering Jackson2HalModule...");
+        restConfiguration.objectMapper().registerModule(new Jackson2HalModule());
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner() {
+    public CommandLineRunner commandLineRunner(GraphDatabaseConfiguration graphDatabaseConfiguration) {
         return strings -> {
-            // Import graph data for users
-            String userImport = String.format("LOAD CSV WITH HEADERS FROM \"%s/users.csv\" AS csvLine\n" +
-                    "MERGE (user:User:_User { id: csvLine.id, age: toInt(csvLine.age), gender: csvLine.gender, occupation: csvLine.occupation, zipcode: csvLine.zipcode })", datasetUrl);
+            if(bootstrap) {
+                // Import graph data for users
+                String userImport = String.format(
+                    "LOAD CSV WITH HEADERS FROM \"%s/users.csv\" AS csvLine\n" +
+                    "MERGE (user:User:_User { "
+                    + "id: csvLine.id, age: toInt(csvLine.age), "
+                    + "gender: csvLine.gender, "
+                    + "occupation: csvLine.occupation, "
+                    + "zipcode: csvLine.zipcode })", datasetUrl);
 
-            neo4jTemplate().query(userImport, null).finish();
+                graphDatabaseConfiguration.neo4jTemplate().query(userImport, null).finish();
+                logger.info("Users import complete");
+            }
         };
     }
 

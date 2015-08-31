@@ -36,3 +36,8 @@ ribbon:
 aws:
   s3:
     url: https://s3.amazonaws.com/dataset-demos
+neo4j:
+  uri: http://graphdb:7474/db/data/
+  username: neo4j
+  password: graphdb
+  bootstrap: true
