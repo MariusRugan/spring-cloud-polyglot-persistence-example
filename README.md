@@ -41,9 +41,9 @@ The connections between these entities give us a good idea of our boundaries tha
 
 For this example project we will use three data services:
 
-* Rating Service (Neo4j)
-* Movie Service (MySQL)
-* User Service (Neo4j)
+* Rating Service (Docker Neo4j via https://github.com/kbastani/docker-neo4j / PivotalCF : neo4j)
+* Movie Service (Docker embedded hsqldb / PivotalCF : MySQL)
+* User Service (Docker Neo4j via https://github.com/kbastani/docker-neo4j / PivotalCF : neo4j)
 
 ## Microservice Architecture
 
@@ -56,6 +56,13 @@ This project contains two discovery services, one on Netflix Eureka, and the oth
 ## API Gateway
 
 Each microservice will coordinate with Eureka to retrieve API routes for the entire cluster. Using this strategy each microservice in a cluster can be load balanced and exposed through one API gateway. Each service will automatically discover and route API requests to the service that owns the route. This proxying technique is equally helpful when developing user interfaces, as the full API of the platform is available through its own host as a proxy.
+
+## Run it on Docker
+
+Search and replace IPs for external i-face IP or vbox IP where applicable e.g. 192.168.X.Y
+
+> $ mvn clean install (from project root dir)
+> $ cd docker; docker-compose up
 
 ## Run it on PivotalCF
 
