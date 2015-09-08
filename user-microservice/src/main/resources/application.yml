@@ -18,7 +18,7 @@ ribbon:
     enabled: true
 aws:
   s3:
-    url: https://s3.amazonaws.com/dataset-demos
+    url: http://s3.amazonaws.com/dataset-demos
 ---
 spring:
   profiles: docker
@@ -35,7 +35,7 @@ ribbon:
     enabled: true
 aws:
   s3:
-    url: https://s3.amazonaws.com/dataset-demos
+    url: http://s3.amazonaws.com/dataset-demos
 neo4j:
   uri: http://graphdb:7474/db/data/
   username: neo4j

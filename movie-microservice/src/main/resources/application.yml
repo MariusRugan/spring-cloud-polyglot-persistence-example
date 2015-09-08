@@ -1,7 +1,9 @@
 spring:
   profiles:
     active: docker
+
 ---
+
 spring:
   profiles: cloud
   jpa:
@@ -21,7 +23,9 @@ eureka:
 ribbon:
   eureka:
     enabled: true
+
 ---
+
 spring:
   profiles: docker
   jpa:
@@ -41,3 +45,24 @@ eureka:
 ribbon:
   eureka:
     enabled: true
+
+---
+
+spring:
+  profiles: scaleway
+  jpa:
+    show_sql: false
+    hibernate:
+      ddl-auto: none
+  datasource:
+    platform: hsqldb
+server:
+  port: 9006
+  address: 127.0.0.1
+ribbon:
+  eureka:
+    enabled: false
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false

@@ -1,7 +1,9 @@
 spring:
   profiles:
     active: docker
+
 ---
+
 spring:
   profiles: cloud
   application:
@@ -11,7 +13,9 @@ spring:
       uri: http://config-99.cfapps.io/
 encrypt:
   failOnError: false
+
 ---
+
 spring:
   profiles: docker
   application:
@@ -19,6 +23,18 @@ spring:
   cloud:
     config:
       uri: http://configserver:8888
+      enabled: false
+encrypt:
+  failOnError: false
+
+---
+
+spring:
+  profiles: scaleway
+  application:
+    name: movie
+  cloud:
+    config:
       enabled: false
 encrypt:
   failOnError: false

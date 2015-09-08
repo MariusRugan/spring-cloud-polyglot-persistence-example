@@ -18,6 +18,11 @@ public class Genre implements Serializable {
     String name;
 
     public Genre() {
+        this(null);
+    }
+
+    public Genre(Long id) {
+        this.setId(id);
     }
 
     public Long getId() {

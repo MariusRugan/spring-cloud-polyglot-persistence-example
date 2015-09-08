@@ -6,6 +6,7 @@ config:
     - discovery
   ports:
     - "8888:8888"
+    - "8001:8001"
   environment:
     - SPRING_PROFILES_ACTIVE=docker
 discovery:
@@ -25,6 +26,7 @@ gateway:
     - rating
     - movie
   ports:
+    - "8000:8000"
     - "10000:10000"
   environment:
     - SPRING_PROFILES_ACTIVE=docker
@@ -67,3 +69,13 @@ user:
     - "9000:9000"
   environment:
     - SPRING_PROFILES_ACTIVE=docker
+graphdb:
+  hostname: graphdb
+  container_name: graphdb
+  image: kbastani/docker-neo4j
+  links:
+    - user
+    - rating
+  ports:
+    - "7474:7474"
+    - "1337:1337"

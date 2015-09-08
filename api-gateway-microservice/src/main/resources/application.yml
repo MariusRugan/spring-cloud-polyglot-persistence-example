@@ -1,6 +1,7 @@
 spring:
   profiles:
-    active: cloud
+    active: docker
+
 ---
 
 spring:
@@ -46,3 +47,25 @@ eureka:
 ribbon:
   eureka:
     enabled: true
+---
+
+spring:
+  profiles: scaleway
+server:
+  port: 10000
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery:8761/eureka/
+  instance:
+    preferIpAddress: true
+ribbon:
+  eureka:
+    enabled: false

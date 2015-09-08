@@ -81,7 +81,6 @@ public class Movie implements Serializable {
     }
 
     public List<Genre> getGenres() {
-
         return genres;
     }
 
