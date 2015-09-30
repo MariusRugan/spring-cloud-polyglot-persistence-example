@@ -11,8 +11,7 @@ case "$1" in
         if [[ ${started} ]]; then
             echo "ERROR: ${APP} is up!"
         else
-            docker rm -f ${CONTAINER_ID}
-            docker run -p 8888:8888 --name=${APP_CONTAINER_NAME} -i -t ${APP}
+            docker run -p 8443:8443 -p 5006:5006 --name=${APP_CONTAINER_NAME} -i -t ${APP}
         fi
         ;;
     stop)
