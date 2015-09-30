@@ -21,12 +21,18 @@ spring:
               label: master
               profiles: cloud
 server:
-  port: 8888
+  port: 8443
+  ssl:
+    key-store: config-microservice.jks
+    key-store-password: secret
+    key-password: password
 info:
   description: Config Server
   url: https://github.com/kbastani/spring-cloud-microservice-example
 ---
 spring:
+  application:
+    name: configServer
   profiles:
     name: docker
   cloud:
@@ -45,7 +51,11 @@ spring:
               label: master
               profiles: cloud
 server:
-  port: 8888
+  port: 8443
+  ssl:
+    key-store: config-microservice.jks
+    key-store-password: secret
+    key-password: password
 info:
   description: Config Server
   url: https://github.com/kbastani/spring-cloud-microservice-example
