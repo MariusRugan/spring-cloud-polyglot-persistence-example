@@ -1,5 +1,8 @@
                   _    
   __ _  ___ _  __(_)__ 
  /  ' \/ _ \ |/ / / -_)
-/_/_/_/\___/___/_/\__/ 
-                       
+/_/_/_/\___/___/_/\__/
+
+application: ............... ${application.formatted-version}
+spring-boot: ............... ${spring-boot.formatted-version}
+

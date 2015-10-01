@@ -22,8 +22,8 @@ spring:
     name: movie
   cloud:
     config:
-      uri: http://configserver:8888
-      enabled: false
+      uri: http://docker_config_1:8443
+      enabled: true
 encrypt:
   failOnError: false
 

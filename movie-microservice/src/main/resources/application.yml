@@ -27,6 +27,8 @@ ribbon:
 ---
 
 spring:
+  application:
+    name: movie
   profiles: docker
   jpa:
     show_sql: false
@@ -35,7 +37,12 @@ spring:
   datasource:
     platform: hsqldb
 server:
-  port: 9006
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: "movie-microservice.jks"
+    key-store-password: secret
+    key-password: password
 eureka:
   client:
     serviceUrl:
@@ -45,7 +52,15 @@ eureka:
 ribbon:
   eureka:
     enabled: true
-
+management:
+  context-path: /admin
+logging:
+  level:
+    com.netflix.discovery: 'OFF'
+    org.springframework.cloud: 'DEBUG'
+info:
+  description: Movie Server
+  url: https://github.com/kbastani/spring-cloud-microservice-example
 ---
 
 spring:
