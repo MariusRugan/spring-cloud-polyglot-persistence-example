@@ -107,11 +107,17 @@
                         <configuration>
                             <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
                             <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+                            <!-- Copy both the fat-jar and keystore(ssl) -->
                             <resources>
                                 <resource>
                                     <targetPath>/</targetPath>
                                     <directory>${project.build.directory}</directory>
                                     <include>${project.build.finalName}.jar</include>
+                                </resource>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.build.sourceDirectory}/../resources</directory>
+                                    <include>config-microservice.jks</include>
                                 </resource>
                             </resources>
                         </configuration>

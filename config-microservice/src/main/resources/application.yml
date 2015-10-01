@@ -53,9 +53,16 @@ spring:
 server:
   port: 8443
   ssl:
-    key-store: config-microservice.jks
+    enabled: true
+    key-store: "config-microservice.jks"
     key-store-password: secret
     key-password: password
+management:
+  context-path: /admin
 info:
   description: Config Server
   url: https://github.com/kbastani/spring-cloud-microservice-example
+logging:
+  level:
+    com.netflix.discovery: 'OFF'
+    org.springframework.cloud: 'DEBUG'
