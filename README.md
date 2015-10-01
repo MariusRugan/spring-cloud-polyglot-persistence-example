@@ -94,3 +94,9 @@ That's it!
 # License
 
 This project is licensed under Apache License 2.0.
+
+# Banner Font
+Small Slant
+
+# Config server
+Example: http://DOCKER_IP:8888/discovery/development
